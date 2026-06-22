@@ -10,15 +10,15 @@
 
 <body>
 
-<!-- Selector -->
+<!-- H5P Selector -->
 <select id="h5p-selector">
   <option value="library-website">Library Website</option>
   <option value="zotero-demo">Zotero Demo</option>
   <option value="pq-widget">PQ Widget</option>
   <option value="pq-tutorial">PQ Tutorial</option>
-  <option value="library-tour">Library Tour</option>
-  <option value="ill-tutorial">ILL Tutorial</option>
-  <option value="ill-request">ILL Request</option>
+  <option value="library-tour">Library Website Tour</option>
+  <option value="ill-tutorial">InterLibrary Loan Tutorial</option>
+  <option value="ill-request">InterLibrary Loan</option>
   <option value="jones-search">Jones Search</option>
   <option value="ebooks-tutorial">Ebooks Tutorial</option>
   <option value="gs-widget">GS Widget</option>
@@ -33,9 +33,10 @@
   <option value="academic-writer-video">Academic Writer Video</option>
 </select>
 
+<!-- H5P Container -->
 <div id="h5p-container"></div>
 
-<!-- IMPORTANT: correct library -->
+<!-- H5P Library -->
 <script src="https://cdn.jsdelivr.net/npm/h5p-standalone/dist/main.bundle.js"></script>
 
 <script>
@@ -46,19 +47,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function loadH5P(folder) {
 
+    console.log("Loading H5P:", folder);
+
     container.innerHTML = "";
 
-    new H5PStandalone.H5P(container, {
-      h5pJsonPath: './content/' + folder,
-      frameJs: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/frame.bundle.js',
-      frameCss: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/styles/h5p.css'
-    });
+    try {
+      new H5PStandalone.H5P(container, {
+        h5pJsonPath: './content/' + folder,
+        frameJs: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/frame.bundle.js',
+        frameCss: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/styles/h5p.css'
+      });
+    } catch (e) {
+      console.error("H5P load error:", folder, e);
+      container.innerHTML = "<p style='color:red'>Failed to load: " + folder + "</p>";
+    }
   }
 
   selector.addEventListener('change', function () {
     loadH5P(this.value);
   });
 
+  // initial load
   loadH5P(selector.value);
 
 });
