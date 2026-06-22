@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Library H5P</title>
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/h5p-standalone@3.9.0/dist/styles/h5p.css">
+</head>
+
+<body>
+
+<h1>The Library Website</h1>
+
+<div id="h5p-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/h5p-standalone@3.9.0/dist/main.bundle.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  const options = {
+    h5pJsonPath: './content',
+    frameJs:
+      'https://cdn.jsdelivr.net/npm/h5p-standalone@3.9.0/dist/frame.bundle.js',
+    frameCss:
+      'https://cdn.jsdelivr.net/npm/h5p-standalone@3.9.0/dist/styles/h5p.css',
+
+    frame: true,
+    copyright: true,
+    fullScreen: true
+  };
+
+  const el = document.getElementById('h5p-container');
+
+  new H5PStandalone.H5P(el, options);
+
+});
+</script>
+
+</body>
+</html>
