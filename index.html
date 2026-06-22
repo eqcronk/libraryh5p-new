@@ -49,25 +49,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log("Loading H5P:", folder);
 
+    // Hard reset container
     container.innerHTML = "";
 
-    try {
-      new H5PStandalone.H5P(container, {
-        h5pJsonPath: './content/' + folder,
-        frameJs: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/frame.bundle.js',
-        frameCss: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/styles/h5p.css'
-      });
-    } catch (e) {
-      console.error("H5P load error:", folder, e);
-      container.innerHTML = "<p style='color:red'>Failed to load: " + folder + "</p>";
-    }
+    // Delay fixes race condition in H5P init
+    setTimeout(() => {
+
+      try {
+        new H5PStandalone.H5P(container, {
+          h5pJsonPath: './content/' + folder,
+          frameJs: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/frame.bundle.js',
+          frameCss: 'https://cdn.jsdelivr.net/npm/h5p-standalone/dist/styles/h5p.css'
+        });
+      } catch (e) {
+        console.error("H5P load failed:", folder, e);
+        container.innerHTML =
+          "<p style='color:red'>Failed to load: " + folder + "</p>";
+      }
+
+    }, 100); // IMPORTANT delay
   }
 
+  // Switch H5P on dropdown change
   selector.addEventListener('change', function () {
     loadH5P(this.value);
   });
 
-  // initial load
+  // Initial load
   loadH5P(selector.value);
 
 });
